@@ -17,14 +17,55 @@
         <h1>Muster Cloud</h1>
     </header>
 
+    <div id="login_div">
+        <div class="log">
+            <h2 id="log_label">Incio de sesión</h2>
+            <input type="text" placeholder="Ingresa tu usuario" id="user_input">
+            <input type="password" placeholder="Ingresa tu contraseña" id="pass_input">
+        </div>
+    
+        <div>
+            <input type="checkbox" id="check_pass" onclick="show_password()">
+            <label id="check_pass_label">Ver Contraseña</label>
+        </div>
+    
+        <div class="log_buttons">
+            <button>Ingresar</button>
+            <button onclick="log_to_new_user_div()">Crear Usuario</button>
+        </div>
+    </div>
 
-    <div class="log">
-        <h2 >Incio de sesión</h2>
-        <input type="text" placeholder="Ingresa tu usuario" class="user_input">
-        <input type="password" placeholder="Ingresa tu contraseña"class="pass_input">
-        <button>Ingresar</button>
+    <div id="create_user_div">
+        <div class="hello">
+            <h2 id="create_user_label">Crea tu usuario</h2>
+            <div class="new_user_input1">
+                <input type="text" placeholder="Ingresa tu nickname" id="new_user_input">
+                <input type="text" placeholder="Ingresa tu nombre completo" id="new_name_input">
+            </div>
+    
+            <div class="new_user_input2">
+                <input type="text" placeholder="Ingresa tu contraseña" id="new_pass_input">
+                <input type="text" placeholder="Ingresa tu dpi" id="new_dpi_input">
+            </div>
+    
+            <div class="new_user_input3">
+                <input type="text" placeholder="Ingresa tu número de teléfono" id="new_phone_input">
+            </div>
+    
+            <div class="new_user_buttons">
+                <button>Registrarme</button>
+                <button onclick="new_user_div_to_log()">Regresar</button>
+            </div>
+
+        </div>
+
+
+        
     </div>
 
 
 </body>
+
+<script src="main.js"></script>
+
 </html>
