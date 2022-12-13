@@ -48,12 +48,18 @@ button{
     text-decoration: none;
     font-size: 16px;
 }
+
 button:hover {
     background-color: black; 
     color: white;
     transition: 0.6s;
-  }
+}
 
+h3:hover { 
+    color: red;
+    transition: 0.6s;
+    cursor: pointer;
+}
 .log_buttons{
     margin-left: 37%;
 }
@@ -82,4 +88,36 @@ button:hover {
 }
 .new_user_buttons{
     margin-left: 38.3%;
+}
+
+#admin_div{
+    display: none;
+}
+
+.admin_nav{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#user_admin_div{
+    display: none;
+}
+
+#name_admin_div{
+    display: none;
+}
+
+#artist_admin_div{
+    display: none;
+}
+
+
+#sheduled_music_admin_div{
+    display: none;
+}
+
+
+#podcast_admin_div{
+    display: none;
 }

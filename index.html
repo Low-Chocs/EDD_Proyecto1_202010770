@@ -13,11 +13,12 @@
 
 <body>
 
-    <header>
-        <h1>Muster Cloud</h1>
-    </header>
 
     <div id="login_div">
+        <header>
+            <h1>Muster Cloud</h1>
+        </header>
+
         <div class="log">
             <h2 id="log_label">Incio de sesión</h2>
             <input type="text" placeholder="Ingresa tu usuario" id="user_input">
@@ -36,7 +37,9 @@
     </div>
 
     <div id="create_user_div">
-        <div class="hello">
+        <header>
+            <h1>Muster Cloud</h1>
+        </header>
             <h2 id="create_user_label">Crea tu usuario</h2>
             <div class="new_user_input1">
                 <input type="text" placeholder="Ingresa tu nickname" id="new_user_input">
@@ -53,16 +56,43 @@
             </div>
     
             <div class="new_user_buttons">
-                <button>Registrarme</button>
+                <button onclick="register_new_user()">Registrarme</button>
                 <button onclick="new_user_div_to_log()">Regresar</button>
-            </div>
-
-        </div>
-
-
-        
+            </div>      
     </div>
 
+    <div id="admin_div">
+        <header>
+            <nav class="admin_nav">
+                <h3 onclick="user_nav()">Usuarios </h3>
+                <h3 onclick="artist_nav()">Artistas</h3>
+                <h3 onclick="name_nav()">Canciones</h3>
+                <h3 onclick="scheduled_music_nav()">Música Programada</h3>
+                <h3 onclick="podcast_nav()">Podcast</h3>
+                <h3 onclick="admin_div_to_log()">Cerrar Sesión</h3>
+            </nav>
+        </header>
+    </div>
+
+    <div id="user_admin_div">
+        USER
+    </div>
+
+    <div id="artist_admin_div">
+        ARTIST
+    </div>
+
+    <div id="name_admin_div">
+        SONGS
+    </div>
+
+    <div id="sheduled_music_admin_div">
+        SCHEDULED MUSIC
+    </div>
+
+    <div id="podcast_admin_div">
+        PODCAST
+    </div>
 
 </body>
 
