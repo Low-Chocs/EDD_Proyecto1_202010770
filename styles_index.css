@@ -104,10 +104,6 @@ h3:hover {
     display: none;
 }
 
-#name_admin_div{
-    display: none;
-}
-
 #artist_admin_div{
     display: none;
 }
@@ -121,3 +117,10 @@ h3:hover {
 #podcast_admin_div{
     display: none;
 }
+
+#user_graph2{
+
+    height: 60%;
+    width: 60%;
+}
+

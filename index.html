@@ -9,10 +9,10 @@
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2972/2972413.png">
     <link rel="stylesheet" href="styles_index.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
-
 
     <div id="login_div">
         <header>
@@ -66,7 +66,6 @@
             <nav class="admin_nav">
                 <h3 onclick="user_nav()">Usuarios </h3>
                 <h3 onclick="artist_nav()">Artistas</h3>
-                <h3 onclick="name_nav()">Canciones</h3>
                 <h3 onclick="scheduled_music_nav()">Música Programada</h3>
                 <h3 onclick="podcast_nav()">Podcast</h3>
                 <h3 onclick="admin_div_to_log()">Cerrar Sesión</h3>
@@ -75,27 +74,42 @@
     </div>
 
     <div id="user_admin_div">
-        USER
+        
+        <div id="user_graph"></div>
+        <input type="file" id="userJson">
+        <button onclick="graphUser()">Graficar Usuarios</button>
+        <button onclick="loadUser()">Cargar Usuarios</button>
+
     </div>
 
     <div id="artist_admin_div">
-        ARTIST
-    </div>
-
-    <div id="name_admin_div">
-        SONGS
+        <div id="artist_graph"></div>
+        <input type="file" id="artistJson">
+        <input type="file" id="songsJson">
+        <button onclick="graph_Artist()">Graficar Artistas y Canciones</button>
+        <button onclick="loadArtist()">Cargar Artistas</button>
+        <button onclick="loadSongs()">Cargar Canciones</button>
     </div>
 
     <div id="sheduled_music_admin_div">
-        SCHEDULED MUSIC
+        <div id="scheduled_graph"></div>
+        <input type="file" id="scheduledJson">
+        <button onclick="graphScheduled()">Graficar Música Calendarizada</button>
+        <button onclick="loadScheduled()">Cargar</button>
     </div>
 
     <div id="podcast_admin_div">
-        PODCAST
+        <div id="podcast_graph"></div>
+        <input type="file" id="podcastJson">
+        <button onclick="graphPodcast()">Graficar Podcast</button>
+        <button onclick="loadPodcast()">Cargar Podcast</button>
     </div>
 
 </body>
-
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>   
+<script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
 <script src="main.js"></script>
+
 
 </html>
