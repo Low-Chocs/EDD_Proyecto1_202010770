@@ -251,6 +251,16 @@ class song_List{
         }
     }
 
+    getSong(counter){
+        var aux = this.head;
+        for(var i = 0; i< this.quantity; i++){
+            if(i == counter){
+                return aux;
+            }else{
+                aux = aux.next;
+            }
+        }  
+    }
     songs_Saved(){
         return this.quantity;
     }
@@ -331,18 +341,27 @@ class artist_List{
         }
         if(this.quantity > 1){
             for(var i = 0; i < this.quantity - 1; i++){
-                codigodot += "U"+i+"->"+"U"+(i+1)+";";
+                codigodot += "U"+i+"->"+"U"+(i+1)+";\n";
         }
 
-        //       var aux2 = this.head;
-        //var counter = 0;
-        //for(var i = 0; i < this.quantity; i++){
-            //if(aux2.name == _artist){
-              //  aux.song_list.quantity
+        var aux2 = this.head;
+        var counter2 = 0;
+        for(var i = 0; i < this.quantity; i++){
+            for(var j = 0; j < aux2.song_list.songs_Saved(); j++){
+                console.log("jkfhjadsj")
+                codigodot += "S"+counter2+"[label = \""+aux2.song_list.getSong(j).name+"\" width = 1.5 style = filled, fillcolor = bisque1, group = 1 ];\n";
                 
-            //}
-          //  aux = aux.next;
-        //}
+                if(j == 0){
+                    codigodot += "U"+(i)+"->S"+counter2+";\n"; 
+                    codigodot += "{rank = same; U"+i+" S"+counter2+"}\n"
+                }else{
+                    codigodot += "S"+(counter2-1)+"->"+" S"+(counter2)+";\n";
+                    codigodot += "{rank = same;  S"+(counter2-1)+" S"+(counter2)+"};\n"
+                }
+                counter2++;
+            }
+            aux2= aux2.next;
+        }
 
         }
         codigodot+="}"
