@@ -330,7 +330,7 @@ class artist_List{
     }
 
     graph(){
-        var codigodot = "digraph G{\nlabel=\" Usuarios \";\nnode [shape=box];\n ";
+        var codigodot = "digraph G{\nlabel=\" Artistas y Canciones \";\nnode [shape=box];\n ";
         var aux = this.head
         var conexiones ="";
         var nodos ="";
@@ -373,10 +373,98 @@ class artist_List{
 
 //END: LIST OF LIST
 
+//BEGIN: PLAYLIST
+class playlist_Node{
+    constructor(_song, _artist, _duaration, _gender){
+        this.song = _song;
+        this.artist = _artist; 
+        this.duration = _duaration; 
+        this.gender = _gender;
+        this.next = null;
+        this.back = null;
+    }
+}
 
+class playlist_List{
+    constructor(){
+        this.head = null;
+        this.buttom = null;
+        this.quantity = 0;
+    }
+
+    insert(_song, _artist, _duaration, _gender){
+        var song = new playlist_Node(_song, _artist, _duaration, _gender);
+
+        if(this.quantity == 0){
+            this.head = song;
+            this.buttom = song;
+            this.quantity++;
+        }else{
+            if(this.quantity == 1){
+                this.buttom.next = song;
+                this.buttom = song;
+                this.head.next = this.buttom;
+                this.head.back = this.buttom;
+                this.buttom.back = this.head;
+                this.quantity++;
+            }else{
+                this.buttom.next = song;
+                song.back = this.buttom;
+                this.buttom = song;
+                this.quantity++;
+            }
+
+        }
+    }
+
+    show(){
+        var aux = this.head;
+        for(var i = 0; i< this.quantity; i++){
+            console.log(aux);
+            aux = aux.next;
+        }
+    }
+
+    show_reverse(){
+        var aux = this.buttom;
+        for(var i = 0; i < this.quantity; i++){
+            console.log(aux);
+            aux = aux.back;
+        }
+    }
+
+    graph(){
+        var codigodot = "digraph G{\nlabel=\"Playlist\";\nnode [shape=box];\n graph [rankdir = LR];";
+        var temporal = this.head
+        var conexiones ="";
+        var nodos ="";
+        var numnodo= 0;
+        while (temporal != null) {
+            nodos+=  "N" + numnodo + "[label=\"Artista: " + temporal.artist + " \nCanción: " + temporal.name + " \n Duración: " + temporal.duration + " \n Género: " + temporal.gender + "\n\"];\n"
+            if(temporal.next != null){
+                var auxnum = numnodo+1
+                conexiones += "N" + numnodo + " -> N" + auxnum + ";\n"
+                conexiones += "N" + auxnum + " -> N" +  numnodo + ";\n"
+            }
+            temporal = temporal.next
+            numnodo++;            
+        }
+        conexiones += "N0 -> N"+(this.quantity-1)+ ";\n"
+        conexiones += "N" +(this.quantity-1)+ " -> N0 ;\n"
+        codigodot += "//agregando nodos\n"
+        codigodot += nodos+"\n"
+        codigodot += "//agregando conexiones o flechas\n"
+        codigodot += "{\n"+conexiones+"\n}\n}"
+        console.log(codigodot)
+        d3.select("#user_graph").graphviz()
+            .renderDot(codigodot)
+    }
+}
+//END: PLAYLIST
 
 var linked_list = new simpleLinkedList();
 var artist_list = new artist_List();
+var playlist_list = new playlist_List();
 
 function log_in(){
     linked_list.login()
@@ -504,6 +592,14 @@ function graph_Artist(){
 }
 linked_list.insert("EDD", "Oscar Armi","123","2654568452521","+502 (123) 123-4567", true)
 
+playlist_list.insert("hello",28193,"if","ioasfiosda","hjdfadjksf")
+playlist_list.insert("hello3",2819,"if","ioasfiosda","hjdfadjksf")
+playlist_list.insert("hello2",8193,"if","ioasfiosda","hjdfadjksf")
+playlist_list.insert("hello1",2813,"if","ioasfiosda","hjdfadjksf")
+playlist_list.insert("hello0",2893,"if","ioasfiosda","hjdfadjksf")
+playlist_list.insert("hello9",2193,"if","ioasfiosda","hjdfadjksf")
+playlist_list.show_reverse();
+playlist_list.graph();
 
 
 
