@@ -29,6 +29,13 @@ function log_to_admin_div(){
     div_user.style.display = "block";
 }
 
+function log_to_user_div(){
+    var div_login = document.getElementById('login_div');
+    var div_user = document.getElementById('user_div');
+    div_login.style.display = "none";    
+    div_user.style.display = "block";
+}
+
 function new_user_div_to_log(){
     var div_login = document.getElementById('login_div');
     var div_user = document.getElementById('create_user_div');
@@ -116,95 +123,6 @@ function user_nav(){
     div_podcast.style.display = "none";   
 }
 //END ADMIN NAVIGATION
-
-//BEGIN: SIMPLE LINKED LIST
-class simpleNode{
-    constructor(_username, _name, _password, _dpi, _phone, _admin){
-        this.username = _username;
-        this.name = _name;
-        this.password = _password
-        this.dpi = _dpi;
-        this.phone = _phone;
-        this.admin = _admin;
-        this.next = null; 
-    }
-}
-
-class simpleLinkedList{
-    constructor(){
-        this.head = null;
-        this.buttom = null;
-        this.quantity = 0;
-    }
-
-    insert(_username, _name, _password, _dpi, _phone, _admin){
-        var new_user = new simpleNode(_username, _name, _password, _dpi, _phone, _admin)
-
-        if(this.quantity == 0){
-            this.head = new_user;
-            this.buttom = new_user;
-            this.quantity++;
-        }else{
-            this.buttom.next = new_user;
-            this.buttom = new_user;
-            this.quantity++;
-        }
-    }
-
-    show(){
-        var aux = this.head;
-        for(var i = 0; i< this.quantity; i++){
-            console.log(aux);
-            aux = aux.next;
-        }
-    }
-    
-    login(){
-        var aux = this.head;
-        var validation = false;
-        for(var i = 0; i< this.quantity; i++){
-            if(aux.username == document.getElementById('user_input').value && aux.password == document.getElementById('pass_input').value){
-                validation = true;
-                break;
-            }
-            aux = aux.next;
-        }
-        if(validation && aux.admin){
-            log_to_admin_div()
-        }else if(validation && !aux.admin){
-            console.log("No admin but logged")
-        }else{
-            console.log(validation)
-            console.log("No response")
-        }
-    }
-
-    graph(){
-        var codigodot = "digraph G{\nlabel=\" Usuarios \";\nnode [shape=box];\n graph [rankdir = LR];";
-        var temporal = this.head
-        var conexiones ="";
-        var nodos ="";
-        var numnodo= 0;
-        while (temporal != null) {
-            nodos+=  "N" + numnodo + "[label=\"Usuario: " + temporal.username + " \n Nombre: " + temporal.name + " \n Contraseña: " + temporal.password + " \n DPI: " + temporal.dpi + "\nTel: " + temporal.phone + "\nAdimn: " + temporal.admin + "\"];\n"
-            if(temporal.next != null){
-                var auxnum = numnodo+1
-                conexiones += "N" + numnodo + " -> N" + auxnum + ";\n"
-            }
-            temporal = temporal.next
-            numnodo++;            
-        }
-        codigodot += "//agregando nodos\n"
-        codigodot += nodos+"\n"
-        codigodot += "//agregando conexiones o flechas\n"
-        codigodot += "{\n"+conexiones+"\n}\n}"
-        console.log(codigodot)
-        d3.select("#user_graph").graphviz()
-            .renderDot(codigodot)
-    }
-}
-
-//END: SIMPLE LINKED LIST
 
 
 //BEGIN: LIST OF LIST
@@ -462,16 +380,223 @@ class playlist_List{
 }
 //END: PLAYLIST
 
+//BEGIN FRIEND STACK
+class friend_Node{
+    constructor(_username, _name, _dpi, _phone){
+        this.username = _username;
+        this.name = _name; 
+        this.dpi = _dpi; 
+        this.phone = _phone;
+        this.next = null;
+    }
+}
+
+class friend_Stack{
+    constructor(){
+        this.size = 0;
+        this.head = null;
+    }
+
+    push(_username, _name, _dpi, _phone){
+        var new_friend = new friend_Node(_username, _name, _dpi, _phone);
+        this.size++;
+
+        if(this.size > 0){
+            new_friend.next = this.head;
+            this.head = new_friend
+        }else{
+            this.head = new_friend
+        }
+        console.log(this.size)
+    }
+
+    pop(){
+        if(this.size > 0){
+            this.size--;
+            var temp = this.head;
+            this.head = this.head.next;
+            return temp
+        }else{
+            console.log("Stack is empty")
+            return null;
+        }
+    }
+
+    show(){
+        var aux = this.head;
+        for(var i = 0; i < this.size; i++){
+            console.log(aux);
+            aux = aux.next
+        }
+    }
+}
+//END FRIEND STACK
+
+//BEGIN BLOCK QUEQUE
+class block_Node{
+    constructor(_username, _name, _dpi, _phone){
+        this.username = _username;
+        this.name = _name; 
+        this.dpi = _dpi; 
+        this.phone = _phone;
+        this.next = null;
+    }
+}
+
+class bloqued_Queque{
+    constructor(){
+        this.size = 0;
+        this.head = null;
+        this.buttom = null;
+    }
+
+    push(_username, _name, _dpi, _phone){
+        var new_block = new block_Node(_username, _name, _dpi, _phone);
+        
+        if(this.size > 0){
+            this.buttom.next = new_block;
+            this.buttom = new_block;
+        }else{
+            this.head = new_block;
+            this.buttom = new_block;
+        }
+        this.size++;
+    }
+
+    pop(){
+        if(this.size > 0){
+            this.size--;
+            var temp = this.head;
+            this.head = this.head.next;
+            return temp
+        }else{
+            console.log("Stack is empty")
+            return null;
+        }
+    }
+
+    show(){
+        var aux = this.head;
+        for(var i = 0; i < this.size; i++){
+            console.log(aux);
+            aux = aux.next
+        }
+    }
+}
+//END BLOCK QUEQUE
+
+
+
+//BEGIN: SIMPLE LINKED LIST
+class simpleNode{
+    constructor(_username, _name, _password, _dpi, _phone, _admin){
+        this.username = _username;
+        this.name = _name;
+        this.password = _password
+        this.dpi = _dpi;
+        this.phone = _phone;
+        this.admin = _admin;
+        this.playlist_list = new playlist_List();
+        this.friends = new bloqued_Queque();
+        this.block = new friend_Stack();
+        this.next = null; 
+    }
+}
+
+class simpleLinkedList{
+    constructor(){
+        this.head = null;
+        this.buttom = null;
+        this.quantity = 0;
+        this.active_user = null;
+    }
+
+    insert(_username, _name, _password, _dpi, _phone, _admin){
+        var new_user = new simpleNode(_username, _name, _password, _dpi, _phone, _admin)
+
+        if(this.quantity == 0){
+            this.head = new_user;
+            this.buttom = new_user;
+            this.quantity++;
+        }else{
+            this.buttom.next = new_user;
+            this.buttom = new_user;
+            this.quantity++;
+        }
+    }
+
+    session_User(){
+        return this.active_user;
+    }
+    show(){
+        var aux = this.head;
+        for(var i = 0; i< this.quantity; i++){
+            console.log(aux);
+            aux = aux.next;
+        }
+    }
+    
+    login(){
+        var aux = this.head;
+        var validation = false;
+        for(var i = 0; i< this.quantity; i++){
+            if(aux.username == document.getElementById('user_input').value && aux.password == document.getElementById('pass_input').value){
+                validation = true;
+                this.session_User = aux;
+                break;
+            }
+            aux = aux.next;
+        }
+        if(validation && aux.admin){
+            log_to_admin_div();
+        }else if(validation && !aux.admin){
+            log_to_user_div();
+        }else{
+            console.log(validation);
+            console.log("No response");
+        }
+    }
+
+    graph(){
+        var codigodot = "digraph G{\nlabel=\" Usuarios \";\nnode [shape=box];\n graph [rankdir = LR];";
+        var temporal = this.head
+        var conexiones ="";
+        var nodos ="";
+        var numnodo= 0;
+        while (temporal != null) {
+            nodos+=  "N" + numnodo + "[label=\"Usuario: " + temporal.username + " \n Nombre: " + temporal.name + " \n Contraseña: " + temporal.password + " \n DPI: " + temporal.dpi + "\nTel: " + temporal.phone + "\nAdimn: " + temporal.admin + "\"];\n"
+            if(temporal.next != null){
+                var auxnum = numnodo+1
+                conexiones += "N" + numnodo + " -> N" + auxnum + ";\n"
+            }
+            temporal = temporal.next
+            numnodo++;            
+        }
+        codigodot += "//agregando nodos\n"
+        codigodot += nodos+"\n"
+        codigodot += "//agregando conexiones o flechas\n"
+        codigodot += "{\n"+conexiones+"\n}\n}"
+        console.log(codigodot)
+        d3.select("#user_graph").graphviz()
+            .renderDot(codigodot)
+    }
+}
+
+//END: SIMPLE LINKED LIST
+
 var linked_list = new simpleLinkedList();
 var artist_list = new artist_List();
-var playlist_list = new playlist_List();
+
 
 function log_in(){
     linked_list.login()
+    console.log(linked_list.session_User)
+    
 }
 
 function register_new_user(){
     var new_user = document.getElementById('new_user_input').value;
+    var new_name = document.getElementById('new_name_input').value;
     var new_pass = document.getElementById('new_pass_input').value;
     var new_dpi = document.getElementById('new_dpi_input').value;
     var new_phone = document.getElementById('new_phone_input').value;
@@ -482,8 +607,6 @@ function register_new_user(){
     }else{
         alert("No dejes espacios vacíos!")
     }
-
-
 }
 
 function graphUser(){
@@ -591,15 +714,21 @@ function graph_Artist(){
     artist_list.graph()
 }
 linked_list.insert("EDD", "Oscar Armi","123","2654568452521","+502 (123) 123-4567", true)
+linked_list.insert("ED", "Oscar Armi","123","2654568452521","+502 (123) 123-4567", false)
 
-playlist_list.insert("hello",28193,"if","ioasfiosda","hjdfadjksf")
-playlist_list.insert("hello3",2819,"if","ioasfiosda","hjdfadjksf")
-playlist_list.insert("hello2",8193,"if","ioasfiosda","hjdfadjksf")
-playlist_list.insert("hello1",2813,"if","ioasfiosda","hjdfadjksf")
-playlist_list.insert("hello0",2893,"if","ioasfiosda","hjdfadjksf")
-playlist_list.insert("hello9",2193,"if","ioasfiosda","hjdfadjksf")
-playlist_list.show_reverse();
-playlist_list.graph();
+var hello = new bloqued_Queque();
+hello.push("kjfasd1", "jklfa", 29340892304,89231)
+hello.push("kjfasd2", "jklfa", 29340892304,89231)
+hello.push("kjfasd3", "jklfa", 29340892304,89231)
+hello.push("kjfasd4", "jklfa", 29340892304,89231)
+hello.push("kjfasd5", "jklfa", 29340892304,89231)
+hello.show()
+hello.pop()
+hello.pop()
+hello.pop()
+hello.show()
+
+
 
 
 

@@ -94,7 +94,17 @@ h3:hover {
     display: none;
 }
 
+#user_div{
+    display: none;
+}
+
 .admin_nav{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.user_nav{
     display: flex;
     justify-content: space-between;
 
