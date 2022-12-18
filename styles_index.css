@@ -128,9 +128,34 @@ h3:hover {
     display: none;
 }
 
+#music_user_div{
+    display: none;
+}
+
+
+#playlist_user_div{
+    display: none;
+}
+
+#people_user_div{
+    display: none;
+}
+
+#friend_user_div{
+    display: none;
+}
+
+#block_user_div{
+    display: none;
+}
+
 #user_graph2{
 
     height: 60%;
     width: 60%;
 }
+table {
+    width: 100%;
+
+  }
 

@@ -9,7 +9,6 @@
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2972/2972413.png">
     <link rel="stylesheet" href="styles_index.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
@@ -86,7 +85,8 @@
         <div id="artist_graph"></div>
         <input type="file" id="artistJson">
         <input type="file" id="songsJson">
-        <button onclick="graph_Artist()">Graficar Artistas y Canciones</button>
+        <button onclick="graph_Artist()">Graficar Orden Alfabetico</button>
+        <button onclick="graph_Artist_Inverse()">Graficar Orden Alfabetico Inverso</button>
         <button onclick="loadArtist()">Cargar Artistas</button>
         <button onclick="loadSongs()">Cargar Canciones</button>
     </div>
@@ -108,14 +108,53 @@
     <div id="user_div">
         <header>
             <nav class="user_nav">
-                <h3 onclick="user_nav()">Canciones</h3>
-                <h3 onclick="artist_nav()">Playlist</h3>
-                <h3 onclick="scheduled_music_nav()">Personas</h3>
-                <h3 onclick="artist_nav()">Amigos</h3>
-                <h3 onclick="scheduled_music_nav()">Bloqueados</h3>
-                <h3 onclick="admin_div_to_log()">Cerrar Sesión</h3>
+                <h3 onclick="music_user_nav()">Canciones</h3>
+                <h3 onclick="playlist_user_nav()">Playlist</h3>
+                <h3 onclick="people_user_nav()">Personas</h3>
+                <h3 onclick="friend_user_nav()">Amigos</h3>
+                <h3 onclick="block_user_nav()">Bloqueados</h3>
+                <h3 onclick="user_div_to_log()">Cerrar Sesión</h3>
             </nav>
         </header>
+    </div>
+
+    <div id="playlist_user_div">
+    
+        <div id="playlist_graph"></div>
+        <div>
+            <P id="song_box">Canción: </P>
+            <P id="artist_box">Artista: </P>
+            <P id="duration_box">Duración: </P>
+            <P id="gender_box">Género: </P>
+            <button onclick="play_Box()" ><</button>
+            <button onclick="play_Box2()">></button>
+        </div>
+    </div>
+
+
+  
+
+    <div id="people_user_div">
+        personas
+    </div>
+
+    <div id="friend_user_div">
+        amigos
+    </div>
+
+    <div id="block_user_div">
+        bloqueados
+    </div>
+
+    <div id="music_user_div">
+        <table class="table table-striped" id="music_table">
+        <thead>
+            <th>Artista</th>
+            <th>Canción</th>
+            <th>Duración</th>
+            <th>Género</th>
+            <th>Agregar</th>
+        </thead>
     </div>
 
 </body>
