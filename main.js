@@ -133,37 +133,11 @@ function music_user_nav(){
     block_div.style.display = "none";
 }
 
-function people_user_nav(){
-    var music_div = document.getElementById('music_user_div');
-    var people_div = document.getElementById('people_user_div');
-    var playlist_div = document.getElementById('playlist_user_div');
-    var friend_div = document.getElementById('friend_user_div');
-    var block_div = document.getElementById('block_user_div');
-
-
-    music_div.style.display = "none";
-    people_div.style.display = "block";
-    playlist_div.style.display = "none";
-    friend_div.style.display = "none";
-    block_div.style.display = "none";
-}
 
 
 
-function friend_user_nav(){
-    var music_div = document.getElementById('music_user_div');
-    var people_div = document.getElementById('people_user_div');
-    var playlist_div = document.getElementById('playlist_user_div');
-    var friend_div = document.getElementById('friend_user_div');
-    var block_div = document.getElementById('block_user_div');
 
 
-    music_div.style.display = "none";
-    people_div.style.display = "none";
-    playlist_div.style.display = "none";
-    friend_div.style.display = "block";
-    block_div.style.display = "none";
-}
 
 function block_user_nav(){
     var music_div = document.getElementById('music_user_div');
@@ -328,7 +302,7 @@ class playlist_List{
             }
             
         }else{
-            if(this.current_song > 0){
+            if(this.current_song > 1){
                 this.current_song--;
             }else{
                 this.current_song = this.quantity;
@@ -363,7 +337,7 @@ class playlist_List{
             var counter = 0;
             while (counter < this.quantity) {
                 nodos+=  "N" + numnodo + "[label=\"Artista: " + temporal.artist + " \nCanción: " + temporal.song + " \n Duración: " + temporal.duration + " \n Género: " + temporal.gender + "\n\"];\n"
-                if(temporal.next != null){
+                if(counter + 1 < this.quantity){
                     var auxnum = numnodo+1
                     conexiones += "N" + numnodo + " -> N" + auxnum + ";\n"
                     conexiones += "N" + auxnum + " -> N" +  numnodo + ";\n"
@@ -428,6 +402,10 @@ class friend_Stack{
             return null;
         }
     }
+    
+    return_head(){
+        return this.head;
+    }
 
     show(){
         var aux = this.head;
@@ -436,6 +414,35 @@ class friend_Stack{
             aux = aux.next
         }
     }
+
+    graph(){
+        if(this.size > 0){
+            var codigodot = "digraph G{\nlabel=\"Lista de amigos\";\nnode [shape=box];";
+            var temporal = this.head
+            var conexiones ="";
+            var nodos ="";
+            var numnodo= 0;
+            var counter = 0;
+            while (counter < this.size) {
+                nodos+=  "N" + numnodo + "[label=\"Amigo: " + temporal.username + " \nNombre: " + temporal.name + " \n Dpi: " + temporal.dpi + " \n Teléfono: " + temporal.phone + "\n\"];\n"
+                if(counter + 1 < this.size){
+                    var auxnum = numnodo+1
+                    conexiones += "N" + numnodo + " -> N" + auxnum + ";\n"
+                    conexiones += "N" + auxnum + " -> N" +  numnodo + ";\n"
+                }
+                temporal = temporal.next
+                numnodo++;    
+                counter++;        
+            }
+            codigodot += "//agregando nodos\n"
+            codigodot += nodos+"\n"
+            codigodot += "//agregando conexiones o flechas\n"
+            codigodot += "{\n"+conexiones+"\n}\n}"
+            console.log(codigodot)
+            d3.select("#friend_graph").graphviz()
+                .renderDot(codigodot)
+        }
+        }
 }
 //END FRIEND STACK
 
@@ -481,6 +488,9 @@ class bloqued_Queque{
             return null;
         }
     }
+    return_head(){
+        return this.head;
+    }
 
     show(){
         var aux = this.head;
@@ -489,6 +499,36 @@ class bloqued_Queque{
             aux = aux.next
         }
     }
+
+    graph(){
+        console.log("LLLLLEGUE")
+        if(this.size > 0){
+            var codigodot = "digraph G{\nlabel=\"Lista de bloqueados\";\nnode [shape=box];";
+            var temporal = this.head
+            var conexiones ="";
+            var nodos ="";
+            var numnodo= 0;
+            var counter = 0;
+            while (counter < this.size) {
+                nodos+=  "N" + numnodo + "[label=\"Bloqueado: " + temporal.username + " \nNombre: " + temporal.name + " \n Dpi: " + temporal.dpi + " \n Teléfono: " + temporal.phone + "\n\"];\n"
+                if(counter + 1 < this.size){
+                    var auxnum = numnodo+1
+                    conexiones += "N" + numnodo + " -> N" + auxnum + ";\n"
+                    conexiones += "N" + auxnum + " -> N" +  numnodo + ";\n"
+                }
+                temporal = temporal.next
+                numnodo++;    
+                counter++;        
+            }
+            codigodot += "//agregando nodos\n"
+            codigodot += nodos+"\n"
+            codigodot += "//agregando conexiones o flechas\n"
+            codigodot += "{\n"+conexiones+"\n}\n}"
+            console.log(codigodot)
+            d3.select("#block_graph").graphviz()
+                .renderDot(codigodot)
+        }
+        }
 }
 //END BLOCK QUEQUE
 
@@ -504,8 +544,8 @@ class simpleNode{
         this.phone = _phone;
         this.admin = _admin;
         this.playlist_list = new playlist_List();
-        this.friends = new bloqued_Queque();
-        this.block = new friend_Stack();
+        this.block = new bloqued_Queque();
+        this.friend = new friend_Stack();
         this.next = null; 
     }
 }
@@ -534,6 +574,39 @@ class simpleLinkedList{
 
     session_User(){
         return this.active_user;
+    }
+
+    friend_to_block(){
+        var hello = this.session_User.friend.return_head();
+        this.session_User.block.push(hello.username, hello.name, hello.dpi, hello.phone);
+        this.session_User.friend.pop()
+    }
+    block_to_friend(){
+        var hello = this.session_User.block.return_head();
+        this.session_User.friend.push(hello.username, hello.name, hello.dpi, hello.phone);
+        this.session_User.block.pop()
+    }
+
+    add_friend(friend){
+        var aux = this.head;
+        for(var i = 0; i <this.quantity; i++){
+            if(aux.username == friend){
+                this.session_User.friend.push(aux.username, aux.name, aux.dpi, aux.phone);
+                this.session_User.friend.show();
+            } 
+            aux = aux.next
+        } 
+    }
+
+    add_block(friend){
+        var aux = this.head;
+        for(var i = 0; i <this.quantity; i++){
+            if(aux.username == friend){
+                this.session_User.block.push(aux.username, aux.name, aux.dpi, aux.phone);
+                this.session_User.block.show();
+            } 
+            aux = aux.next
+        } 
     }
     show(){
         var aux = this.head;
@@ -588,6 +661,8 @@ class simpleLinkedList{
         d3.select("#user_graph").graphviz()
             .renderDot(codigodot)
     }
+
+
 }
 
 //END: SIMPLE LINKED LIST
@@ -618,6 +693,8 @@ class artist_List{
             this.quantity++;
         }
     }
+
+
 
     bubble_Sort(){
         var aux = this.head;
@@ -1082,6 +1159,7 @@ function log_to_user_div(){
 
 
 function playlist_user_nav(){
+    console.log("pasee")
     document.getElementById('song_box').innerHTML = "Canción: "+linked_list.session_User.playlist_list.getSong().song;
     document.getElementById('artist_box').innerHTML = "Artista: "+linked_list.session_User.playlist_list.getSong().artist;
     document.getElementById('duration_box').innerHTML = "Duración: "+linked_list.session_User.playlist_list.getSong().duration;
@@ -1136,6 +1214,66 @@ function play_Box2(){
     document.getElementById('artist_box').innerHTML = "Artista: "+linked_list.session_User.playlist_list.getSong().artist;
     document.getElementById('duration_box').innerHTML = "Duración: "+linked_list.session_User.playlist_list.getSong().duration;
     document.getElementById('gender_box').innerHTML = "Género: "+linked_list.session_User.playlist_list.getSong().gender;
+}
+
+function people_user_nav(){
+    linked_list.show()
+    var music_div = document.getElementById('music_user_div');
+    var people_div = document.getElementById('people_user_div');
+    var playlist_div = document.getElementById('playlist_user_div');
+    var friend_div = document.getElementById('friend_user_div');
+    var block_div = document.getElementById('block_user_div');
+
+
+    music_div.style.display = "none";
+    people_div.style.display = "block";
+    playlist_div.style.display = "none";
+    friend_div.style.display = "none";
+    block_div.style.display = "none";
+}
+
+function add_Friends(){
+    element = document.getElementById("input_friend")
+    linked_list.add_friend(element.value)
+}
+
+function add_Blocks(){
+    element = document.getElementById("input_friend")
+    linked_list.add_block(element.value)
+}
+
+function delete_Friends(){
+    linked_list.session_User.friend.pop()
+    linked_list.session_User.friend.graph()
+    linked_list.session_User.block.graph()
+}
+
+function delete_Friends2(){
+    linked_list.friend_to_block()
+    linked_list.session_User.friend.graph()
+    linked_list.session_User.block.graph()
+}
+function delete_Blocks2(){
+    linked_list.block_to_friend()
+    linked_list.session_User.friend.graph()
+    linked_list.session_User.block.graph()
+}
+
+function friend_user_nav(){
+    var music_div = document.getElementById('music_user_div');
+    var people_div = document.getElementById('people_user_div');
+    var playlist_div = document.getElementById('playlist_user_div');
+    var friend_div = document.getElementById('friend_user_div');
+    var block_div = document.getElementById('block_user_div');
+
+
+    music_div.style.display = "none";
+    people_div.style.display = "none";
+    playlist_div.style.display = "none";
+    friend_div.style.display = "block";
+    block_div.style.display = "none";
+    linked_list.session_User.friend.graph()
+    linked_list.session_User.block.graph()
 }
 linked_list.insert("EDD", "Oscar Armi","123","2654568452521","+502 (123) 123-4567", true)
 linked_list.insert("ED", "Oscar Armi","123","2654568452521","+502 (123) 123-4567", false)
